@@ -23,7 +23,7 @@ namespace OPDRu
             var user = await _dbService.GetUserByUsernameAsync(UsernameBox.Text);
             if (user != null && user.Password == PasswordBox.Password)
             {
-                NavigationService?.Navigate(new HomePage(user));
+                NavigationService?.Navigate(new HomePage(user, _dbService));
             }
             else
             {

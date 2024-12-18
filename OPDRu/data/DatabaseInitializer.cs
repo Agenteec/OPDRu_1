@@ -2,9 +2,8 @@
 {
     public static class DatabaseInitializer
     {
-        public static void InitializeDatabase()
+        public static void InitializeDatabase(ApplicationDbContext context)
         {
-            using var context = new ApplicationDbContext();
             context.Database.EnsureCreated();
         }
     }

@@ -25,7 +25,7 @@ namespace OPDRu
                 MessageBox.Show("Заполните все поля!");
                 return;
             }
-            if (PasswordBox1.Password.Equals(PasswordBox2.Password))
+            if (!PasswordBox1.Password.Equals(PasswordBox2.Password))
             {
                 MessageBox.Show("Пароли не совпадают!");
                 return;

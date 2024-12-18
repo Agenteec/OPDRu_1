@@ -10,8 +10,9 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Добро пожаловать!" FontSize="20" Margin="0,0,0,10" />
+            <TextBlock Text="Тест по русскому языку" FontSize="20" Margin="0,0,0,10" />
             <Button Content="Выбрать тест" Click="ChooseTestButton_Click" />
+            <Button Content="Редактировать тесты" Click="EditTestButton_Click" />
             <Button Content="Просмотреть статистику" Click="ViewStatsButton_Click" />
         </StackPanel>
     </Grid>

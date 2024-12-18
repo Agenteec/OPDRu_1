@@ -61,6 +61,52 @@
                 .Where(s => s.UserId == userId)
                 .ToListAsync();
         }
-    }
 
+        public async Task AddQuestionAsync(Question question)
+        {
+            _context.Questions.Add(question);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteQuestionAsync(int questionId)
+        {
+            var question = await _context.Questions.FindAsync(questionId);
+            if (question != null)
+            {
+                _context.Questions.Remove(question);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddAnswerAsync(Answer answer)
+        {
+            _context.Answers.Add(answer);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAnswerAsync(int answerId)
+        {
+            var answer = await _context.Answers.FindAsync(answerId);
+            if (answer != null)
+            {
+                _context.Answers.Remove(answer);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteTestAsync(int testId)
+        {
+            var test = await _context.Tests.FindAsync(testId);
+            if (test != null)
+            {
+                _context.Tests.Remove(test);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+    }
 }
