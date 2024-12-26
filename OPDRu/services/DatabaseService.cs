@@ -47,19 +47,11 @@
                 .Where(q => q.TestId == testId)
                 .ToListAsync();
         }
-
-        public async Task SaveStatisticAsync(Statistic statistic)
+        public async Task<List<Answer>> GetAnswersByQuestionIdAsync(int questionId)
         {
-            _context.Statistics.Add(statistic);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<Statistic>> GetUserStatisticsAsync(int userId)
-        {
-            return await _context.Statistics
-                .Include(s => s.Test)
-                .Where(s => s.UserId == userId)
-                .ToListAsync();
+            return await _context.Answers
+               .Where(a => a.QuestionId == questionId)
+               .ToListAsync();
         }
 
         public async Task AddQuestionAsync(Question question)
@@ -93,6 +85,19 @@
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task SaveStatisticAsync(Statistic statistic)
+        {
+            _context.Statistics.Add(statistic);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Statistic>> GetUserStatisticsAsync(int userId)
+        {
+            return await _context.Statistics
+                .Include(s => s.Test)
+                .Where(s => s.UserId == userId)
+                .ToListAsync();
+        }
 
         public async Task DeleteTestAsync(int testId)
         {
@@ -107,6 +112,12 @@
         {
             await _context.SaveChangesAsync();
         }
-
+        public async Task<Test?> GetTestWithQuestionsAndAnswersAsync(int testId)
+        {
+            return await _context.Tests
+                .Include(t => t.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(t => t.Id == testId);
+        }
     }
 }

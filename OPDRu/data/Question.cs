@@ -1,4 +1,6 @@
-﻿namespace OPDRu.data
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OPDRu.data
 {
     public class Question
     {
@@ -7,6 +9,8 @@
         public int TestId { get; set; }
         public Test Test { get; set; } = null!;
         public List<Answer> Answers { get; set; } = new();
+        [NotMapped]
+        public bool IsSelected { get; set; } = false;
     }
 
 }

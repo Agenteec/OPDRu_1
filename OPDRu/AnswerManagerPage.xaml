@@ -10,16 +10,12 @@
 
     <Grid>
         <StackPanel Margin="10">
-            <TextBox x:Name="AnswerTextBox" Margin="0,0,0,10" />
-            <CheckBox x:Name="IsAnswerCorrectCheckBox" Content="Верный ответ" Margin="0,0,0,10"/>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Добавить ответ" Click="AddAnswerButton_Click" Margin="0,0,0,10"/>
-                <Button Content="Удалить ответ" Click="DeleteAnswerButton_Click" Margin="0,0,0,10"/>
-            </StackPanel>
 
-            <DataGrid x:Name="AnswersDataGrid" AutoGenerateColumns="False" SelectionChanged="AnswersDataGrid_SelectionChanged" Margin="0,0,0,10">
+            <DataGrid x:Name="AnswersDataGrid" AutoGenerateColumns="False" Margin="0,0,0,10"
+                                 
+                      RowEditEnding="AnswersDataGrid_RowEditEnding">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название" Binding="{Binding Text}" Width="*"/>
+                    <DataGridTextColumn Header="Ответ" Binding="{Binding Text}" Width="*"/>
                     <DataGridCheckBoxColumn Header="Правильность" Binding="{Binding IsCorrect}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>

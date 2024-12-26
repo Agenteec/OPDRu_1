@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace OPDRu
@@ -41,7 +42,7 @@ namespace OPDRu
             if (QuestionsDataGrid.SelectedItem is Question selectedQuestion)
             {
                 await _databaseService.DeleteQuestionAsync(selectedQuestion.Id);
-                Questions.Remove(selectedQuestion); // Удаляем из ObservableCollection
+                Questions.Remove(selectedQuestion);
             }
         }
 
@@ -54,9 +55,17 @@ namespace OPDRu
             }
         }
 
-        private async void BackButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(_parrent);
+        }
+        private void AnswersDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (QuestionsDataGrid.SelectedItem is Question selectedQuestion)
+            {
+                var answerPage = new AnswerManagerPage(selectedQuestion, _databaseService, this);
+                NavigationService.Navigate(answerPage);
+            }
         }
 
         private async void QuestionsDataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
@@ -67,11 +76,14 @@ namespace OPDRu
                 {
                     var existingQuestions = await _databaseService.GetQuestionsByTestIdAsync(_test.Id);
                     var questionInDb = existingQuestions.FirstOrDefault(q => q.Id == editedQuestion.Id);
-
+                    editedQuestion.TestId  = _test.Id;
                     if (questionInDb == null)
                     {
-                        await _databaseService.AddQuestionAsync(editedQuestion);
-                        Questions.Add(editedQuestion);
+                        if (!String.IsNullOrEmpty(editedQuestion?.Text))
+                        {
+                            await _databaseService.AddQuestionAsync(editedQuestion);
+                        }
+                        //Questions.Add(editedQuestion);
                     }
                     else
                     {

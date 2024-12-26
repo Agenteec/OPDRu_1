@@ -12,7 +12,7 @@
         <StackPanel Margin="10">
             <DataGrid x:Name="QuestionsDataGrid"
                       AutoGenerateColumns="False"
-                      SelectionChanged="QuestionsDataGrid_SelectionChanged"
+                      MouseDoubleClick="AnswersDataGrid_MouseDoubleClick"
                       RowEditEnding="QuestionsDataGrid_RowEditEnding"
                       ItemsSource="{Binding Questions}"
                       Margin="0,0,0,10">

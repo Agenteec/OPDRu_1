@@ -38,29 +38,6 @@ namespace OPDRu
             AnswersDataGrid.ItemsSource = _question.Answers;
         }
 
-        private async void AddAnswerButton_Click(object sender, RoutedEventArgs e)
-        {
-            var answerText = AnswerTextBox.Text;
-
-            if (!string.IsNullOrWhiteSpace(answerText))
-            {
-                var newAnswer = new Answer
-                {
-                    Text = answerText,
-                    QuestionId = _question.Id,
-                    IsCorrect = IsAnswerCorrectCheckBox.IsChecked ?? false
-                };
-
-                await _databaseService.AddAnswerAsync(newAnswer);
-                LoadAnswers();
-                AnswerTextBox.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, заполните текст ответа.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
         private async void DeleteAnswerButton_Click(object sender, RoutedEventArgs e)
         {
             if (AnswersDataGrid.SelectedItem is Answer selectedAnswer)
@@ -69,14 +46,35 @@ namespace OPDRu
                 LoadAnswers();
             }
         }
-        private void AnswersDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void AnswersDataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
-
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                if (e.Row.Item is Answer editedAnswer)
+                {
+                    var existingAnswers = await _databaseService.GetAnswersByQuestionIdAsync(_question.Id);
+                    var answerInDb = existingAnswers.FirstOrDefault(q => q.Id == editedAnswer.Id);
+                    editedAnswer.QuestionId = _question.Id;
+                    if (answerInDb == null)
+                    {
+                        if (!String.IsNullOrEmpty(editedAnswer?.Text))
+                        {
+                            await _databaseService.AddAnswerAsync(editedAnswer);
+                        }
+                    }
+                    else
+                    {
+                        answerInDb.Text = editedAnswer.Text;
+                        await _databaseService.Save();
+                    }
+                }
+            }
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(_parrent);
         }
+
 
     }
 }

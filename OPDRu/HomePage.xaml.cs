@@ -22,7 +22,7 @@ namespace OPDRu
 
         private void ChooseTestButton_Click(object sender, RoutedEventArgs e)
         {
-            //NavigationService?.Navigate(new TestSelectionPage(_currentUser));
+            NavigationService?.Navigate(new TestSelectionPage(_currentUser, _databaseService, this));
         }
 
         private void ViewStatsButton_Click(object sender, RoutedEventArgs e)
